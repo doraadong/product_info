@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+{{ super() }}
+<style>
+
+
+/*#producticon {
+    font-size: 15px;
+    width:100%;
+    top:0;
+    min-height: 250px;
+    margin-left:auto;
+    margin-right:auto;
+}*/
+
+.glyphicon
+{
+    font-size: 15px;
+    width:100%;
+    top:0;
+    min-height: 10px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
+@media screen and (max-width:980px){
+  .formheader {
+    min-height: 50px;
+  }
+
+  .group {
+    min-height: 120px;
+  }
+
+  .col-right .inner {
+    min-height: 120px;
+  }
+
+  .col-right .inner:first-child {
+    min-height: 260px
+  }
+}
+
+</style>
+
+{% endblock %}
+
+{% block scripts%}
+{{ super() }}
+<script>
+
+  $(function()
+  {
+      $(initEntries);
+      $(document).on('click', '.btn-add', function(e)
+      {
+          e.preventDefault();
+              var controlForm = $(this).closest('div .group')
+              currentEntry = $(this).parents('.entry:first'),
+              // newEntry = $(currentEntry.next().show()).appendTo(controlForm);
+              newEntry = $(currentEntry.next().show())
+
+          controlForm.children('.entry:visible:not(:last)').children().children('.btn-add')
+              .removeClass('btn-add').addClass('btn-remove')
+              .removeClass('btn-success').addClass('btn-danger')
+              .html('<span class="glyphicon glyphicon-minus"></span>');
+      }).on('click', '.btn-remove', function(e)
+      {
+        if (confirm('Are you sure? This process cannot be reversed.')) {
+          $(this).parents('.entry:first').hide();
+          $(this).parents('.entry:first').find("*").prop('disabled',true);
+          e.preventDefault();
+        };
+
+      return false;
+
+    });
+  });
+
+  function initEntries(){
+      var defaultproducts = {{number['products']}};
+      var storesarray = [{{number["stores-0"]}}, {{number["stores-1"]}},{{number["stores-2"]}}];
+      var startproduct = $('#productforms').find('.entry:first');
+      var startstores = $('#products-0-ad').find('.entry:first');
+      for (i=0;i<storesarray[0]-1;i++){
+          startstores.next().show();
+          startstores = startstores.next();
+      }
+      if (storesarray[0] != 0){
+        $('#products-0-ad').children('.entry:visible:not(:last)').children().children('.btn-add')
+            .removeClass('btn-add').addClass('btn-remove')
+            .removeClass('btn-success').addClass('btn-danger')
+            .html('<span class="glyphicon glyphicon-minus"></span>');
+      };
+      for (i=0;i<defaultproducts-1;i++){
+          startproduct.next().show();
+          var storesId = '#products-'+(i+1)+'-ad'
+          var startstores = $(storesId).find('.entry:first');
+          for (j=0;j<storesarray[i+1]-1;j++){
+              startstores.next().show();
+              startstores = startstores.next();
+          }
+          if (storesarray[0] != 0){
+            $(storesId).children('.entry:visible:not(:last)').children().children('.btn-add')
+                .removeClass('btn-add').addClass('btn-remove')
+                .removeClass('btn-success').addClass('btn-danger')
+                .html('<span class="glyphicon glyphicon-minus"></span>');
+          };
+          startproduct = startproduct.next();
+       };
+       if (defaultproducts != 0){
+         $('#productforms').children('.entry:visible:not(:last)').children().children('.btn-add')
+             .removeClass('btn-add').addClass('btn-remove')
+             .removeClass('btn-success').addClass('btn-danger')
+             .html('<span class="glyphicon glyphicon-minus" id="producticon"></span>');
+       };
+
+
+   };
+
+</script>
+{% endblock%}
+
+{% block page_content %}
+
+
+<div class="page-header">
+    <h1>Hello, Stranger!</h1>
+</div>
+
+<div class="container-fulid">
+    <div class="row">
+        <div class="col-sm-8">
+            <form action="" method="post" role="form" autocomplete="off">
+              {{ categoryform.hidden_tag() }}
+             <div class="row">
+              <div class="formheader col-sm-4" id="categoryform">
+                  <ul>{{ categoryform.categoryname.label }}: {{ categoryform.categoryname() }}</ul>    
+                  <ul>{{ categoryform.property_id.label}}: {{ categoryform.property_id()}}</ul>
+             </div>
+
+              <div class="group col-sm-4" id="productforms">
+
+                    <div class="entry input-group col-xs-3" id="products-0">
+                        {% for field in categoryform.products[0].form %}
+                             {% if field.name != "products-0-csrf_token" and field.name != "products-0-stores" %}
+                                 <ul> {{ field.label }} {{ field }} </ul>
+                             {% endif %}
+                        {% endfor %}
+
+
+                        <div class="group" id="products-0-ad">
+                              <div class="entry input-group col-xs-3" id="products-0-ad-0">
+                                    {% for field in categoryform.products[0].stores[0].form%}
+                                        {% if field.name != "products-0-stores-0-csrf_token" %}
+                                            <ul> {{ field.label }} {{ field }} </ul>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success btn-add" type="button">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                             </div>
+
+                             <div class="entry input-group col-xs-3" id="products-0-ad-1" style = "display:none">
+                                   {% for field in categoryform.products[0].stores[1].form%}
+                                       {% if field.name != "products-0-stores-1-csrf_token" %}
+                                           <ul> {{ field.label }} {{ field }} </ul>
+                                       {% endif %}
+                                   {% endfor %}
+                                   <span class="input-group-btn">
+                                       <button class="btn btn-success btn-add" type="button">
+                                           <span class="glyphicon glyphicon-plus"></span>
+                                       </button>
+                                   </span>
+                            </div>
+
+                            <div class="entry input-group col-xs-3" id="products-0-ad-2" style = "display:none">
+                                  {% for field in categoryform.products[0].stores[2].form%}
+                                      {% if field.name != "products-0-stores-2-csrf_token" %}
+                                          <ul> {{ field.label }} {{ field }} </ul>
+                                      {% endif %}
+                                  {% endfor %}
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-success btn-add" type="button">
+                                          <span class="glyphicon glyphicon-plus"></span>
+                                      </button>
+                                  </span>
+                           </div>
+
+                           <div class="entry input-group col-xs-3" id="products-0-ad-3" style = "display:none">
+                                 {% for field in categoryform.products[0].stores[3].form%}
+                                     {% if field.name != "products-0-stores-3-csrf_token" %}
+                                         <ul> {{ field.label }} {{ field }} </ul>
+                                     {% endif %}
+                                 {% endfor %}
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-success btn-add" type="button">
+                                         <span class="glyphicon glyphicon-plus"></span>
+                                     </button>
+                                 </span>
+                           </div>
+                        </div>
+
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <span class="glyphicon glyphicon-plus" id="producticon"></span>
+                            </button>
+                        </span>
+                    </div>
+
+
+
+                    <div class="entry input-group col-xs-3" id="products-1" style = "display:none">
+                        {% for field in categoryform.products[1].form %}
+                             {% if field.name != "products-1-csrf_token" and field.name != "products-1-stores" %}
+                                 <ul> {{ field.label }} {{ field }} </ul>
+                             {% endif %}
+                        {% endfor %}
+                        <div class="group" id="products-1-ad">
+                              <div class="entry input-group col-xs-3" id="products-1-ad-0">
+                                    {% for field in categoryform.products[1].stores[0].form%}
+                                        {% if field.name != "products-1-stores-0-csrf_token" %}
+                                            <ul> {{ field.label }} {{ field }} </ul>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success btn-add" type="button">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                             </div>
+
+                             <div class="entry input-group col-xs-3" id="products-1-ad-1" style = "display:none">
+                                   {% for field in categoryform.products[1].stores[1].form%}
+                                       {% if field.name != "products-1-stores-1-csrf_token" %}
+                                           <ul> {{ field.label }} {{ field }} </ul>
+                                       {% endif %}
+                                   {% endfor %}
+                                   <span class="input-group-btn">
+                                       <button class="btn btn-success btn-add" type="button">
+                                           <span class="glyphicon glyphicon-plus"></span>
+                                       </button>
+                                   </span>
+                            </div>
+
+                            <div class="entry input-group col-xs-3" id="products-1-ad-2" style = "display:none">
+                                  {% for field in categoryform.products[1].stores[2].form%}
+                                      {% if field.name != "products-1-stores-2-csrf_token" %}
+                                          <ul> {{ field.label }} {{ field }} </ul>
+                                      {% endif %}
+                                  {% endfor %}
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-success btn-add" type="button">
+                                          <span class="glyphicon glyphicon-plus"></span>
+                                      </button>
+                                  </span>
+                           </div>
+
+                           <div class="entry input-group col-xs-3" id="products-1-ad-3" style = "display:none">
+                                 {% for field in categoryform.products[1].stores[3].form%}
+                                     {% if field.name != "products-1-stores-3-csrf_token" %}
+                                         <ul> {{ field.label }} {{ field }} </ul>
+                                     {% endif %}
+                                 {% endfor %}
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-success btn-add" type="button">
+                                         <span class="glyphicon glyphicon-plus"></span>
+                                     </button>
+                                 </span>
+                           </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <span class="glyphicon glyphicon-plus" id="producticon"></span>
+                            </button>
+                        </span>
+                    </div>
+
+                    <div class="entry input-group col-xs-3" id="products-2" style = "display:none">
+                        {% for field in categoryform.products[2].form %}
+                             {% if field.name != "products-2-csrf_token" and field.name != "products-2-stores" %}
+                                 <ul> {{ field.label }} {{ field }} </ul>
+                             {% endif %}
+                        {% endfor %}
+                        <div class="group" id="products-2-ad">
+                              <div class="entry input-group col-xs-3" id="products-2-ad-0">
+                                    {% for field in categoryform.products[2].stores[0].form%}
+                                        {% if field.name != "products-2-stores-0-csrf_token" %}
+                                            <ul> {{ field.label }} {{ field }} </ul>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success btn-add" type="button">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                             </div>
+
+                             <div class="entry input-group col-xs-3" id="products-2-ad-1" style = "display:none">
+                                   {% for field in categoryform.products[2].stores[1].form%}
+                                       {% if field.name != "products-2-stores-1-csrf_token" %}
+                                           <ul> {{ field.label }} {{ field }} </ul>
+                                       {% endif %}
+                                   {% endfor %}
+                                   <span class="input-group-btn">
+                                       <button class="btn btn-success btn-add" type="button">
+                                           <span class="glyphicon glyphicon-plus"></span>
+                                       </button>
+                                   </span>
+                            </div>
+
+                            <div class="entry input-group col-xs-3" id="products-2-ad-2" style = "display:none">
+                                  {% for field in categoryform.products[2].stores[2].form%}
+                                      {% if field.name != "products-2-stores-2-csrf_token" %}
+                                          <ul> {{ field.label }} {{ field }} </ul>
+                                      {% endif %}
+                                  {% endfor %}
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-success btn-add" type="button">
+                                          <span class="glyphicon glyphicon-plus"></span>
+                                      </button>
+                                  </span>
+                           </div>
+
+                           <div class="entry input-group col-xs-3" id="products-2-ad-3" style = "display:none">
+                                 {% for field in categoryform.products[2].stores[3].form%}
+                                     {% if field.name != "products-2-stores-3-csrf_token" %}
+                                         <ul> {{ field.label }} {{ field }} </ul>
+                                     {% endif %}
+                                 {% endfor %}
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-success btn-add" type="button">
+                                         <span class="glyphicon glyphicon-plus"></span>
+                                     </button>
+                                 </span>
+                           </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <span class="glyphicon glyphicon-plus" id="producticon"></span>
+                            </button>
+                        </span>
+                    </div>
+
+
+              </div>
+            <div class="col-sm-4">
+               <div>{{ categoryform.submit()}}</div>
+            </div>
+            </form>
+        </div>
+      </div>
+
+    </div>
+</div>
+{% endblock %}
