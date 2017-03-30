@@ -8,13 +8,14 @@ However, there is few example showing how to populate the objects with data from
 
 I illustrate the solution with a tiny web app in Flask. Here I defined a simple schema as shown below. 
 
-
 When you get into the web app, you can first search for a specific 'category', say 'Shoes'. 
-
+![app page 1](readme-1.png?raw=true "")
 
 It exist! You can select the one that you think is most relevant to your search.
+![app page 2](readme-2.png?raw=true "")
 
 You will find a multi-layers form with information retrieved from the database. You can just a take a look or make changes as you like. Don't forget to click 'Submit'. 
+![app page 3](readme-3.png?raw=true "")
 
 ### Prerequisites
 
@@ -56,8 +57,6 @@ The front-end can(should) be seperated into 3 files (.html, .css and .js). I did
 Very welcome! 
 Please feel free to say whatever you want to make about the solution or the shitty looking front-end. 
  
-## Contributing
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to me.
 
 ## License
 
