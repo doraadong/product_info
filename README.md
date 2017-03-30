@@ -22,7 +22,7 @@ You will find a multi-layers form with information retrieved from the database. 
 
 Before you install, it is suggested to set up a virtual environment for your Python for better management. You can get this done by either virtualenv(https://virtualenv.pypa.io/en/stable/) or conda(https://github.com/conda/conda). 
 
-Then, you should install all dependent packages by typing:
+Then, you should install all dependent packages by typing:  
 pip install -r requirements.txt
 
 ### Installing 
@@ -35,17 +35,17 @@ pip install -r requirements.txt
 
 * Create the tables in the database. I use SQLAlchemy so you can simply type the following in your command line:
     
-python manage.py shell  
-from manage.py import db
-db.create_all()  
-quit()  
+    python manage.py shell  
+    from manage.py import db
+    db.create_all()  
+    quit()  
 
 * Run the app. In your command line, type:
 python manae.py runserver 
 
 ## Built With
 
-* [Flask](http://flask.pocoo.org/) - The web framework used, with many 
+* [Flask](http://flask.pocoo.org/) - The web framework used
 * [PostgreSQL](https://www.postgresql.org/) - Database
 * [jQuery](https://jquery.com/) - Front-end dynamic display 
 
