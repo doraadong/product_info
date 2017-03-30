@@ -7,6 +7,7 @@ People might use WTForms when they build web apps in Python. It provides a type 
 However, there is few example showing how to populate the objects with data from the database or vise versa when both "fieldlist" and "formlist" are used. Here is a solution I figured out myself. In the view.py, I write 2 functions: populate_from_database and populate_to_database, both of which handle populating recursively for every entry in the form and its sub-forms. This is not ideal. Ideally, functions dealing with populating should be seperated from the view.py and be grouped with the objects either in forms.py or models.py. But it works. Hope there will be better solutions coming out soon.
 
 I illustrate the solution with a tiny web app in Flask. Here I defined a simple schema as shown below. 
+![app page 0](readme-0.png?raw=true "")
 
 When you get into the web app, you can first search for a specific 'category', say 'Shoes'. 
 ![app page 1](readme-1.png?raw=true "")
@@ -51,7 +52,7 @@ python manae.py runserver
 ## Todo
 
 ### Fix front-end
-The front-end can(should) be seperated into 3 files (.html, .css and .js). I didn't make it happen on my own laptop. So currently all things are just messed up together in the .html. 
+The front-end can(should) be separated into 3 files (.html, .css and .js). I didn't make it happen on my own laptop. So currently all things are just messed up together in the .html. 
 
 ## Comments
 Very welcome! 
@@ -60,11 +61,11 @@ Please feel free to say whatever you want to make about the solution or the shit
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Credits
-I used the folder structure and followed some practice as suggestd by Mr.Grinberg. You can find the source code of his project along with license information below. I am very grateful for his contributions to open source.
+I used the folder structure and followed some practice as suggested by Mr.Grinberg. You can find the source code of his project along with license information below. I am very grateful for his contributions to open source.
 
-Project: Flasky  https://github.com/miguelgrinberg/flasky
-Copyright (c) 2013 Miguel Grinberg
-License (MIT) https://github.com/miguelgrinberg/flasky/blob/master/LICENSE
+Project: Flasky  https://github.com/miguelgrinberg/flasky  
+Copyright (c) 2013 Miguel Grinberg   
+License (MIT) https://github.com/miguelgrinberg/flasky/blob/master/LICENSE    
