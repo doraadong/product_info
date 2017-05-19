@@ -36,7 +36,7 @@ pip install -r requirements.txt
 * Create the tables in the database. I use SQLAlchemy so you can simply type the following in your command line:
     
     python manage.py shell  
-    from manage.py import db
+    from manage.py import db   
     db.create_all()  
     quit()  
 
